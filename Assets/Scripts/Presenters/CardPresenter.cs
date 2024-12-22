@@ -273,10 +273,10 @@ namespace Solitaire.Presenters
             }
             else if (_lastClick + DoubleClickInterval > Time.time)
             {
-                if (_card.IsMoveable)
-                    _game.MoveCard(_card, null);
-                else
-                    _game.PlayErrorSfx();
+                // if (_card.IsMoveable)
+                //     _game.MoveCard(_card, null);
+                // else
+                //     _game.PlayErrorSfx();
             }
 
             _lastClick = Time.time;
