@@ -10,8 +10,8 @@ namespace Solitaire.Presenters
 {
     public class GamePresenter : MonoBehaviour
     {
-        private const float CamSizeLandscape = 4.25f;
-        private const float CamSizePortrait = 8.25f;
+        [SerializeField] float CamSizeLandscape = 4.25f;
+        [SerializeField] float CamSizePortrait = 8.25f;
 
         [SerializeField]
         private Physics2DRaycaster _cardRaycaster;
@@ -68,11 +68,18 @@ namespace Solitaire.Presenters
             SetCameraLayers(true);
         }
 
+        public bool DebugAdjustCamera;
         private void Update()
         {
             // Detect win condition
             if (_gameState.State.Value == Game.State.Playing)
                 _game.DetectWinCondition();
+
+            if (DebugAdjustCamera)
+            {
+                DebugAdjustCamera = false;
+                AdjustCamera(Orientation.Landscape);
+            }
         }
 
         private void AdjustCamera(Orientation orientation)
