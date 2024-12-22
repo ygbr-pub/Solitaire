@@ -39,6 +39,7 @@ namespace Solitaire.Models
             Alpha = new FloatReactiveProperty(1);
             IsVisible = new BoolReactiveProperty(true);
             IsInteractable = new BoolReactiveProperty(true);
+            IsInDragStack = new BoolReactiveProperty();
         }
 
         public Suits Suit { get; private set; }
@@ -49,6 +50,8 @@ namespace Solitaire.Models
         public FloatReactiveProperty Alpha { get; }
         public BoolReactiveProperty IsVisible { get; }
         public BoolReactiveProperty IsInteractable { get; }
+        public BoolReactiveProperty IsInDragStack { get; }
+
 
         public Pile Pile { get; set; }
         public Vector3 DragOrigin { get; set; }
@@ -81,6 +84,7 @@ namespace Solitaire.Models
             Alpha.Value = 1f;
             IsVisible.Value = true;
             IsInteractable.Value = true;
+            IsInDragStack.Value = false;
             DragOrigin = Vector3.zero;
             DragOffset = Vector3.zero;
             OrderToRestore = 0;

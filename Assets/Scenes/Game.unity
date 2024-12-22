@@ -4757,7 +4757,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3874600550774958535, guid: f2fdf530ba231b14285b71d29610e11d, type: 3}
       propertyPath: m_text
-      value: Points
+      value: points
       objectReference: {fileID: 0}
     - target: {fileID: 3874600550774958535, guid: f2fdf530ba231b14285b71d29610e11d, type: 3}
       propertyPath: m_fontColor.b
@@ -9267,7 +9267,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3874600550774958535, guid: f2fdf530ba231b14285b71d29610e11d, type: 3}
       propertyPath: m_text
-      value: Moves
+      value: moves
       objectReference: {fileID: 0}
     - target: {fileID: 3874600550774958535, guid: f2fdf530ba231b14285b71d29610e11d, type: 3}
       propertyPath: m_fontColor.b
@@ -9280,6 +9280,10 @@ PrefabInstance:
     - target: {fileID: 3874600550774958535, guid: f2fdf530ba231b14285b71d29610e11d, type: 3}
       propertyPath: m_fontColor.r
       value: 0.53333336
+      objectReference: {fileID: 0}
+    - target: {fileID: 3874600550774958535, guid: f2fdf530ba231b14285b71d29610e11d, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4289043080
       objectReference: {fileID: 0}
     - target: {fileID: 3874600550774958535, guid: f2fdf530ba231b14285b71d29610e11d, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'

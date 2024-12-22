@@ -39,6 +39,13 @@ namespace Solitaire.Presenters
 
         [SerializeField]
         private SpriteRenderer _suit2;
+        [Space]
+        
+        [SerializeField]
+        private Transform _dropShadowPivot;
+        
+        [SerializeField]
+        private SpriteRenderer _dropShadow;
 
         [Inject]
         private readonly Card _card;
@@ -72,6 +79,12 @@ namespace Solitaire.Presenters
             _card.IsInteractable.Subscribe(UpdateInteractability).AddTo(this);
             _card.IsFaceUp.Where(CanFlip).Subscribe(AnimateFlip).AddTo(this);
             _card.Position.Where(CanMove).Subscribe(AnimateMove).AddTo(this);
+            _card.IsInDragStack.Subscribe(AnimateHeightShadow).AddTo(this);
+        }
+
+        void AnimateHeightShadow(bool isInDragStack)
+        {
+
         }
 
         #region IDisposable
@@ -111,21 +124,27 @@ namespace Solitaire.Presenters
             return Vector3.SqrMagnitude(position - _transform.position) > MoveEpsilon;
         }
 
-        private void AnimateMove(Vector3 position)
+        private void AnimateMove(Vector3 targetPosition)
         {
             if (_card.IsDragged)
             {
                 // Update position instantly while the card is being dragged
-                _transform.position = position;
+                _transform.position = targetPosition;
             }
             else
             {
                 // Move card over time to the target position while changing
                 // order at the start and end so the cards are overlaid correctly.
+                const Ease defaultEase = Ease.OutQuad;
+                const Ease reverseEase = Ease.OutBack;
+
+                var isReversing = Vector3.Distance(targetPosition, _card.DragOrigin) < 0.1f;
+                var defaultAnimDuration = _config.AnimationDuration;
                 if (_tweenMove == null)
+                {
                     _tweenMove = _transform
-                        .DOLocalMove(position, _config.AnimationDuration)
-                        .SetEase(Ease.OutQuad)
+                        .DOLocalMove(targetPosition, isReversing ? defaultAnimDuration : defaultAnimDuration)
+                        .SetEase(isReversing ? reverseEase : defaultEase)
                         .SetAutoKill(false)
                         .OnRewind(() =>
                         {
@@ -138,8 +157,12 @@ namespace Solitaire.Presenters
                         {
                             _card.Order.Value = _card.OrderToRestore;
                         });
+                }
                 else
-                    _tweenMove.ChangeEndValue(position, true).Restart();
+                {
+                    _tweenMove.SetEase(isReversing ? reverseEase : defaultEase);
+                    _tweenMove.ChangeEndValue(targetPosition, true).Restart();
+                }
             }
         }
 
@@ -152,6 +175,7 @@ namespace Solitaire.Presenters
             _type.sortingOrder = sortingOrder + 1;
             _suit1.sortingOrder = sortingOrder + 1;
             _suit2.sortingOrder = sortingOrder + 1;
+            _dropShadow.sortingOrder = sortingOrder - 1;
         }
 
         private void UpdateAlpha(float alpha)
@@ -205,8 +229,6 @@ namespace Solitaire.Presenters
             var spriteType = _config.TypeSprites[(int)_card.Type];
             _type.sprite = spriteType;
             _type.color = color;
-            
-            SetColorPalette(_card.Suit, _card.Type);
         }
 
         public void Flip(bool isFaceUp)
@@ -225,6 +247,17 @@ namespace Solitaire.Presenters
             {
                 _dndHandler.BeginDrag(eventData, _card.Pile.SplitAt(_card));
                 _card.IsInteractable.Value = false;
+
+                var tweenId = GetInstanceID() + "DragScale";
+                DOTween.Kill(tweenId);
+                var duration = 0.6f;
+                _transform.DOScale(1.1f, duration)
+                    .SetEase(Ease.OutBack)
+                    .SetId(tweenId);
+                _dropShadow.DOFade(0.15f, duration)
+                    .SetEase(Ease.OutBack)
+                    .OnStart( ()=> _dropShadow.DOFade(0.35f, 0.1f).Complete())
+                    .SetId(tweenId);
             }
         }
 
@@ -240,6 +273,16 @@ namespace Solitaire.Presenters
             {
                 _dndHandler.EndDrag();
                 _card.IsInteractable.Value = true;
+
+                var tweenId = GetInstanceID() + "DragScale";
+                var duration = 0.3f;
+                DOTween.Kill(tweenId);
+                _transform.DOScale(1.00f, duration)
+                    .SetEase(Ease.OutBack)
+                    .SetId(tweenId);
+                _dropShadow.DOFade(0f, duration)
+                    .SetId(tweenId)
+                    .SetEase(Ease.OutBack);
             }
         }
 
@@ -302,64 +345,5 @@ namespace Solitaire.Presenters
         }
 
         #endregion IPoolable
-        
-        private void SetColorPalette(Card.Suits suit, Card.Types type)
-        {
-            switch (suit)
-            {
-                case Card.Suits.Spade:
-                    break;
-                case Card.Suits.Club:
-                    break;
-                case Card.Suits.Heart:
-                    break;
-                case Card.Suits.Diamond:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(suit), suit, null);
-            }
-
-            switch (type)
-            {
-                case Card.Types.Ace:
-                    break;
-                case Card.Types.Two:
-                    break;
-                case Card.Types.Three:
-                    break;
-                case Card.Types.Four:
-                    break;
-                case Card.Types.Five:
-                    break;
-                case Card.Types.Six:
-                    break;
-                case Card.Types.Seven:
-                    break;
-                case Card.Types.Eight:
-                    break;
-                case Card.Types.Nine:
-                    break;
-                case Card.Types.Ten:
-                    break;
-                case Card.Types.Jack:
-                    break;
-                case Card.Types.Queen:
-                    break;
-                case Card.Types.King:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
-            }
-
-            void SetBody()
-            {
-                
-            }
-
-            void SetDetails()
-            {
-                
-            }
-        }
     }
 }

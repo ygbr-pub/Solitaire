@@ -30,6 +30,7 @@ namespace Solitaire.Services
                 card.OrderToRestore = card.Pile.Cards.IndexOf(card);
                 card.Order.Value = DragOrder + i;
                 card.IsDragged = true;
+                card.IsInDragStack.Value = true;
             }
         }
 
@@ -50,6 +51,7 @@ namespace Solitaire.Services
             {
                 var card = _draggedCards[i];
                 card.IsDragged = false;
+                card.IsInDragStack.Value = false;
             }
         }
 
