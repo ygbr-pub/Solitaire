@@ -205,6 +205,8 @@ namespace Solitaire.Presenters
             var spriteType = _config.TypeSprites[(int)_card.Type];
             _type.sprite = spriteType;
             _type.color = color;
+            
+            SetColorPalette(_card.Suit, _card.Type);
         }
 
         public void Flip(bool isFaceUp)
@@ -300,5 +302,64 @@ namespace Solitaire.Presenters
         }
 
         #endregion IPoolable
+        
+        private void SetColorPalette(Card.Suits suit, Card.Types type)
+        {
+            switch (suit)
+            {
+                case Card.Suits.Spade:
+                    break;
+                case Card.Suits.Club:
+                    break;
+                case Card.Suits.Heart:
+                    break;
+                case Card.Suits.Diamond:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(suit), suit, null);
+            }
+
+            switch (type)
+            {
+                case Card.Types.Ace:
+                    break;
+                case Card.Types.Two:
+                    break;
+                case Card.Types.Three:
+                    break;
+                case Card.Types.Four:
+                    break;
+                case Card.Types.Five:
+                    break;
+                case Card.Types.Six:
+                    break;
+                case Card.Types.Seven:
+                    break;
+                case Card.Types.Eight:
+                    break;
+                case Card.Types.Nine:
+                    break;
+                case Card.Types.Ten:
+                    break;
+                case Card.Types.Jack:
+                    break;
+                case Card.Types.Queen:
+                    break;
+                case Card.Types.King:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
+
+            void SetBody()
+            {
+                
+            }
+
+            void SetDetails()
+            {
+                
+            }
+        }
     }
 }
