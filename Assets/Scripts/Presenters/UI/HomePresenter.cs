@@ -106,17 +106,17 @@ namespace Solitaire.Presenters
 
         private void PlayAnimationSequence(bool isLandscape)
         {
-            AnimateCards(ref _sequenceCards);
-
-            if (isLandscape)
-            {
-                AnimateSuits(ref _sequenceSuitsLeft, _rectSuitsLeft, false);
-                AnimateSuits(ref _sequenceSuitsRight, _rectSuitsRight, true);
-            }
-            else
-            {
-                AnimateSuits(ref _sequenceSuitsCenter, _rectSuitsCenter, false);
-            }
+            // AnimateCards(ref _sequenceCards);
+            //
+            // if (isLandscape)
+            // {
+            //     AnimateSuits(ref _sequenceSuitsLeft, _rectSuitsLeft, false);
+            //     AnimateSuits(ref _sequenceSuitsRight, _rectSuitsRight, true);
+            // }
+            // else
+            // {
+            //     AnimateSuits(ref _sequenceSuitsCenter, _rectSuitsCenter, false);
+            // }
         }
 
         private void AnimateCards(ref Sequence sequence)
